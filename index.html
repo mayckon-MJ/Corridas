@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Relatório de Viagens | Mayckon Ramos</title>
+  <title>Relatório de Viagens | Mayckon</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
     :root {
@@ -142,6 +142,39 @@
       font-size: 1.4rem;
       color: var(--green);
       font-weight: 800;
+    }
+
+    /* Quadrados de informação da Linha 50 */
+    .row-50-cards {
+      display: flex;
+      gap: 12px;
+      max-width: 450px;
+      margin: 0 auto 12px auto;
+    }
+
+    .row-50-card {
+      flex: 1;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .row-50-card span {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .row-50-card strong {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--primary);
     }
 
     /* Card de Informações sobre Tarifas */
@@ -490,6 +523,118 @@
       background: rgba(255, 255, 255, 0.4);
       transform: scale(1.08);
     }
+
+    /* Tela Cheia - Sobre Mim */
+    .full-screen-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--bg);
+      z-index: 20000;
+      overflow-y: auto;
+      padding: 24px 16px;
+    }
+
+    .full-screen-modal.active {
+      display: block;
+    }
+
+    .btn-back {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #EFF6FF;
+      color: var(--accent);
+      border: 1px solid #BFDBFE;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-back:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .about-content {
+      max-width: 800px;
+      margin: 60px auto 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .about-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      width: 100%;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .about-section h2 {
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .about-section p {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .about-prints {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 12px;
+      align-items: center;
+    }
+
+    .about-prints img {
+      max-width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .map-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .map-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      border-radius: 10px;
+      gap: 12px;
+    }
+
+    .map-item span {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+    }
   </style>
 </head>
 <body>
@@ -501,48 +646,71 @@
       </div>
       <h1>Mayckon</h1>
       <p>Relatório de Viagens & Transporte Privado</p>
-      </header>
+    </header>
 
+    <div style="
+      max-width: 450px;
+      margin: 20px auto;
+      padding: 24px 20px;
+      background-color: #ffffff;
+      border-radius: 40px 40px 0 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e2e8f0;
+      text-align: center;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    ">
+      <h1 style="
+          margin: 0 0 12px 0;
+          font-size: 22px;
+          color: #1e293b;
+          font-weight: 700;
+          letter-spacing: -0.3px;
+      ">
+          Corridas Feitas Nesse Mês
+      </h1>
+
+      <p style="
+          margin: 0;
+          font-size: 15px;
+          color: #64748b;
+          line-height: 1.5;
+      ">
+          <strong style="color: #334155;"><span style="color: #e11d48; font-weight: 800;">01</span>/11/2026</strong>
+          <span style="margin: 0 6px; color: #94a3b8;">até</span>
+          <strong style="color: #334155;"><span style="color: #e11d48; font-weight: 800;">30</span>/11/2026</strong>
+      </p>
+    </div>
+
+    <!-- Quadrados superiores: Kms Total (Linha 50, Col A) e Valor sem Desconto -->
+    <div class="row-50-cards">
+      <div class="row-50-card">
+        <span>Kms Total Corrido</span>
+        <strong id="cell-a50">-</strong>
+      </div>
+      <div class="row-50-card">
+        <span>Valor sem Desconto</span>
+        <strong id="val-sem-desconto">R$ 0,00</strong>
+      </div>
+    </div>
+
+    <!-- Quadrados inferiores: Valor Descontado (Economizado) e Kms não cobrados -->
+    <div class="row-50-cards">
+      
+      <div class="row-50-card">
+        <span>Kms não cobrados</span>
+        <strong id="kms-nao-cobrados">-</strong>
+      </div>
+      <div class="row-50-card">
+        <span>Valor Descontado</span>
+        <strong id="val-com-desconto">R$ 0,00</strong>
+      </div>
+    </div>
+    
     <div class="summary-card">
-      <span>Total Acumulado</span>
+      <span style="font-size: 15px;">Total Acumulado a pagar com desconto</span>
       <strong id="total-amount">R$ 0,00</strong>
     </div>
 
-    
-    <div style="
-    max-width: 450px;
-    margin: 20px auto;
-    padding: 24px 20px;
-    background-color: #ffffff;
-    border-radius: 40px 40px 0 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e2e8f0;
-    text-align: center;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    ">
-    <h1 style="
-        margin: 0 0 12px 0;
-        font-size: 22px;
-        color: #1e293b;
-        font-weight: 700;
-        letter-spacing: -0.3px;
-    ">
-        Corridas Feitas Nesse Mês
-    </h1>
-
-    <p style="
-        margin: 0;
-        font-size: 15px;
-        color: #64748b;
-        line-height: 1.5;
-    ">
-        <strong style="color: #334155;"><span style="color: #e11d48; font-weight: 800;">01</span>/11/2026</strong>
-        <span style="margin: 0 6px; color: #94a3b8;">até</span>
-        <strong style="color: #334155;"><span style="color: #e11d48; font-weight: 800;">30</span>/11/2026</strong>
-    </p>
-</div>
-
-    
     <div id="trips-container" class="trips-list">
       <div class="loading">Carregando dados das viagens...</div>
     </div>
@@ -559,59 +727,57 @@
   <br><br>
 
   <div class="pix-card">
-      <h3>Pagamento via PIX</h3>
-      <p>Chave para transferência rápida:</p>
-      <div class="pix-box">
-        <div class="pix-key" id="pix-key">62995679219</div>
-        <button class="btn-copy" onclick="copyPix()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          Copiar Chave
-        </button>       
-      </div>
-      <p class="pix-confirm-title">Confirme o meu nome para maior segurança antes de enviar o pix:</p>
-      <p class="pix-confirm-name">MAYCKON JHONATAS SILVA RAMOS</p>
+    <h3>Pagamento via PIX</h3>
+    <p>Chave para transferência rápida:</p>
+    <div class="pix-box">
+      <div class="pix-key" id="pix-key">62995679219</div>
+      <button class="btn-copy" onclick="copyPix()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        Copiar Chave
+      </button>       
+    </div>
+    <p class="pix-confirm-title">Confirme o meu nome para maior segurança antes de enviar o pix:</p>
+    <p class="pix-confirm-name">MAYCKON JHONATAS SILVA RAMOS</p>
     <div style="
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-">
-    
-    <img src="https://s3.amazonaws.com//beta-img.b2bstack.net/uploads/production/provider/image/36/o2hFZ2Wc.png" alt="Nubank" style="
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        object-fit: cover;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     ">
+      <img src="https://s3.amazonaws.com//beta-img.b2bstack.net/uploads/production/provider/image/36/o2hFZ2Wc.png" alt="Nubank" style="
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          object-fit: cover;
+      ">
       <p style="
-        margin: 0;
-        font-size: 18px;
-        font-weight: 700;
-        color: #820AD1;
-    ">
-        Nubank
-    </p>
-</div>
-
+          margin: 0;
+          font-size: 18px;
+          font-weight: 700;
+          color: #820AD1;
+      ">
+          Nubank
+      </p>
     </div>
+  </div>
   
-   <!-- Bloco de Informações sobre Valores e Regras -->
-    <div class="info-card">
-      <div class="info-card-header">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-        <span>Informações de Tarifa & Observações</span>
-      </div>
-      <ul>
-         <li>Eu cobro o mesmo valor que o aplicativo me paga.</li>       
-        <li>Valor base cobrado: <strong>R$ 2,00 por km rodado</strong>.</li>
-        <li>Se houver o acréscimo de <strong>+ R$ 4,00 do Etanol</strong> ao final da corrida, é porque eu não estava em operação (trabalhando) no momento.</li>
-        <li>Caso não haja esse valor adicional, é porque após o desembarque permaneci conectado e trabalhando nos aplicativos (Uber/99) ou eu já estava trabalhando antes.</li>
-        <li><strong>Os +4 reais é para pagar só o combustivel de volta. não irei cobrar os 2 reais por kM para voltar para casa.</strong></li>
-      </ul>
+  <!-- Bloco de Informações sobre Valores e Regras -->
+  <div class="info-card">
+    <div class="info-card-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+      <span>Informações de Tarifa & Observações</span>
     </div>
+    <ul>
+      <li>Eu cobro o mesmo valor que o aplicativo me paga.</li>       
+      <li>Valor base cobrado: <strong>R$ 2,00 por km rodado</strong>.</li>
+      <li>Se houver o acréscimo de <strong>+ R$ 4,00 do Etanol</strong> ao final da corrida, é porque eu não estava em operação (trabalhando) no momento.</li>
+      <li>Caso não haja esse valor adicional, é porque após o desembarque permaneci conectado e trabalhando nos aplicativos (Uber/99) ou eu já estava trabalhando antes.</li>
+      <li><strong>Os +4 reais é para pagar só o combustivel de volta. não irei cobrar os 2 reais por kM para voltar para casa.</strong></li>
+    </ul>
+  </div>
 
   <div style="text-align: center; width: 100%;">
-    <button style="
+    <button onclick="openAboutModal()" style="
         display: inline-block;
         padding: 12px 28px;
         font-size: 15px;
@@ -625,11 +791,70 @@
         font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         transition: all 0.2s ease;
     ">
-        ver
+        Sobre mim
     </button>
-</div>
+  </div>
 
-  
+  <!-- Tela Cheia: Sobre Mim -->
+  <div class="full-screen-modal" id="about-modal">
+    <button class="btn-back" onclick="closeAboutModal()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Voltar
+    </button>
+    <div class="about-content">
+      <div class="avatar-wrapper">
+        <img class="avatar-img" src="https://i.ibb.co/N20Gwqbb/Screenshot-20261102-010721.png" alt="Foto de Perfil Mayckon">
+      </div>
+      <h1 style="font-size: 1.25rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 20px;">Mayckon</h1>
+
+      <div class="about-section">
+        <h2>Meu foco em trabalhar na Uber e 99</h2>
+        <p>Eu trabalho como motorista de aplicativo pelas plataformas Uber e 99. Mantenho o foco total na direção e fico calado durante a corrida toda, só respondo o que me perguntam para garantir uma viagem tranquila e segura para todos.</p>
+        </div>
+      
+       <p><strong style="text-align:center;">Minhas avaliações nos aplicativos</strong></p> 
+     
+      
+      <div class="about-section">
+        <h2>Como os Aplicativos me pagam</h2>
+        <p>Eu aceito as corridas que me pagam R$ 2,00 por Km rodado. Veja abaixo os exemplos de prints das corridas que aparece para mim:</p>
+        <div class="about-prints">
+          <p>Essa corrida não compensar ir, porque só está pagando<br> <strong style="text-align: center; background: #fadaac; border-radius: 30px; padding: 3px;">R$ 1,34/km</strong></p>
+          <img style="width: 200px; height: 400px;" src="https://i.ibb.co/0V8kV9DX/Screenshot-20261102-162755.png" alt="Print de corrida 1">
+          <p>Essa corrida está pagando um valor ótimo, acima dos:<br> <strong style="text-align: center; background: #fadaac; border-radius: 30px; padding: 3px;">R$ 2,00/km</strong></p>
+          <img style="width: 200px; height: 400px;" src="https://i.ibb.co/fVX966yK/1793658949328.jpg" alt="Print de corrida 2">
+        </div>
+      </div>
+
+      <div class="about-section">
+        <h2 style="text-align: center;">Localizações</h2>
+        <div class="map-list">
+          <div class="map-item">
+            <span>Onde eu morava no Pará</span>
+            <a href="https://maps.app.goo.gl/7yjLuY6wmJWD3EnJA" target="_blank" class="btn-map">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              Ver Mapa
+            </a>
+          </div>
+          <div class="map-item">
+            <span>Onde estou morando atualmente de aluguel</span>
+            <a href="https://maps.app.goo.gl/5NkJKUdPWCJ3Drdj9?g_st=ac" target="_blank" class="btn-map">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              Ver Mapa
+            </a>
+          </div>
+          <div class="map-item">
+            <span style="font-size: 14px;">Onde irei morar quando a Construtora Realiza irar entregar a minha casa</span>
+            <a href="https://maps.app.goo.gl/YHpSGtRxgDpuGxao6?g_st=ac" target="_blank" class="btn-map">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              Ver Mapa
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSm3QZVwBBSAHyO4gFLcW6NtMEcNkh-Vw9ddqPuMrihoBMZ_MhQgrsVoeiGtiaEgJqpOVPZZyoLupV7/pub?output=csv';
 
@@ -650,13 +875,28 @@
       }
     }
 
+    function openAboutModal() {
+      document.getElementById('about-modal').classList.add('active');
+    }
+
+    function closeAboutModal() {
+      document.getElementById('about-modal').classList.remove('active');
+    }
+
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
         closeModalDirect();
+        closeAboutModal();
       }
     });
 
     function parseCurrency(val) {
+      if (!val) return 0;
+      const clean = val.replace(/[^\d,. -]/g, '').replace(',', '.');
+      return parseFloat(clean) || 0;
+    }
+
+    function parseNumber(val) {
       if (!val) return 0;
       const clean = val.replace(/[^\d,. -]/g, '').replace(',', '.');
       return parseFloat(clean) || 0;
@@ -691,6 +931,9 @@
         container.innerHTML = '';
 
         data.forEach((row, index) => {
+          // Interrompe o processamento na linha 49 (índice 48 em diante)
+          if (index >= 48) return;
+
           if (!row || row.length < 2) return;
 
           // Coluna A (Índice 0): Valor da corrida
@@ -739,7 +982,7 @@
 
           const dateBadgeHtml = dateTimeStr 
             ? `<div class="trip-date">
-                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 16 14"></polyline></svg>
                  ${dateTimeStr}
                </div>` 
             : '';
@@ -762,6 +1005,19 @@
 
           container.appendChild(tripCard);
         });
+
+        // Atualiza os cartões de cálculo baseados na Linha 50 (índice 49)
+        if (data.length >= 50 && data[49]) {
+          const kmsTotalNum = parseNumber(data[49][0]);
+          const valorSemDesconto = kmsTotalNum * 2;
+          const valorDescontado = valorSemDesconto - grandTotal;
+          const kmsNaoCobrados = kmsTotalNum - (grandTotal / 2);
+
+          document.getElementById('cell-a50').innerText = kmsTotalNum ? kmsTotalNum + ' km' : '-';
+          document.getElementById('val-sem-desconto').innerText = formatCurrency(valorSemDesconto);
+          document.getElementById('val-com-desconto').innerText = formatCurrency(valorDescontado > 0 ? valorDescontado : 0);
+          document.getElementById('kms-nao-cobrados').innerText = (kmsNaoCobrados > 0 ? kmsNaoCobrados.toFixed(1) : '0') + ' km';
+        }
 
         document.getElementById('total-amount').innerText = formatCurrency(grandTotal);
       },
