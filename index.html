@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -307,18 +308,25 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 20px;
+      padding: 16px 20px 8px 20px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+      transition: all 0.2s ease;
+      cursor: pointer;
     }
 
     .trip-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 14px;
-      margin-bottom: 16px;
+      align-items: center;
       gap: 12px;
+      user-select: none;
+    }
+
+    .trip-header-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
     }
 
     .trip-info {
@@ -348,6 +356,7 @@
 
     .trip-price-box {
       text-align: right;
+      flex-shrink: 0;
     }
 
     .trip-price-label {
@@ -365,7 +374,48 @@
       color: var(--green);
     }
 
-    /* Timeline dos trechos */
+    /* Timeline Retrátil */
+    .trip-body {
+      display: none;
+      border-top: 1px solid var(--border);
+      margin-top: 14px;
+      padding-top: 16px;
+    }
+
+    .trip-card.expanded .trip-body {
+      display: block;
+    }
+
+    /* Botão central inferior com a seta */
+    .card-footer-toggle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 8px;
+      padding-bottom: 4px;
+      margin-top: 6px;
+    }
+
+    .toggle-arrow {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #F1F5F9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      transition: transform 0.3s ease, background 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .trip-card.expanded .toggle-arrow {
+      transform: rotate(180deg);
+      background: #EFF6FF;
+      color: var(--accent);
+    }
+
+    /* Timeline dos trechos estilo app */
     .timeline {
       position: relative;
       padding-left: 24px;
@@ -390,6 +440,7 @@
       margin-bottom: 0;
     }
 
+    /* Bolinhas com cores específicas estilo aplicativo */
     .timeline-dot {
       position: absolute;
       left: -24px;
@@ -397,17 +448,36 @@
       width: 16px;
       height: 16px;
       border-radius: 50%;
-      background: var(--accent);
+      background: #2563EB; /* Parada azul por padrão */
       border: 3px solid white;
       box-shadow: 0 0 0 1px var(--border);
     }
 
-    .timeline-item:first-child .timeline-dot {
-      background: #0D9488;
+    .timeline-dot.dot-start {
+      background: #16A34A; /* Bolinha Verde: Saída */
     }
 
-    .timeline-item:last-child .timeline-dot {
-      background: #E11D48;
+    .timeline-dot.dot-stop {
+      background: #2563EB; /* Bolinha Azul: Parada */
+    }
+
+    .timeline-dot.dot-end {
+      background: #DC2626; /* Bolinha Vermelha: Destino */
+    }
+
+    /* Distância em KM no meio dos trechos */
+    .km-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #475569;
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin: 4px 0 12px 0;
     }
 
     .location-info {
@@ -1347,6 +1417,10 @@
       });
     }
 
+    function toggleCard(cardElement) {
+      cardElement.classList.toggle('expanded');
+    }
+
     Papa.parse(CSV_URL, {
       download: true,
       skipEmptyLines: true,
@@ -1354,6 +1428,7 @@
         const data = results.data;
         const container = document.getElementById('trips-container');
         let grandTotal = 0;
+        let grandKmsTotal = 0; // Soma acumulada dos KMs exibidos nas corridas
 
         if (!data || data.length === 0) {
           container.innerHTML = '<div class="error-msg">Nenhuma viagem encontrada.</div>';
@@ -1366,43 +1441,95 @@
           if (index >= 48) return;
           if (!row || row.length < 2) return;
 
+          // Coluna A (índice 0): Valor da corrida
           const rawPrice = row[0];
           const priceVal = parseCurrency(rawPrice);
           grandTotal += priceVal;
 
+          // Coluna B (índice 1): Data e horário
           const dateTimeStr = row[1] ? row[1].trim() : '';
 
-          const stops = [];
-          for (let i = 2; i < row.length; i += 2) {
+          // Coluna C (índice 2): Nome do Passageiro(a)
+          const passengerName = row[2] ? row[2].trim() : '';
+          const tripTitleText = passengerName ? `Corrida para ${passengerName}` : `Viagem ${index + 1}`;
+
+          // A partir da Coluna D (índice 3): Mapeamento das localizações e KMs intermediários
+          const routePoints = [];
+          
+          let i = 3;
+          while (i < row.length) {
             const name = row[i] ? row[i].trim() : '';
             const link = row[i + 1] ? row[i + 1].trim() : '';
+            const kmText = row[i + 2] ? row[i + 2].trim() : '';
 
             if (name) {
-              stops.push({ name, link });
+              routePoints.push({
+                name: name,
+                link: link,
+                kmToNext: kmText
+              });
+
+              // Somando os kms diretamente para o total acumulado
+              if (kmText) {
+                grandKmsTotal += parseNumber(kmText);
+              }
+            }
+
+            i += 3;
+          }
+
+          // Fallback caso venha sem coluna de KM separada
+          if (routePoints.length === 0 && row.length >= 4) {
+            for (let j = 3; j < row.length; j += 2) {
+              const name = row[j] ? row[j].trim() : '';
+              const link = row[j + 1] ? row[j + 1].trim() : '';
+              if (name) {
+                routePoints.push({ name, link, kmToNext: '' });
+              }
             }
           }
 
-          if (stops.length === 0) return;
+          if (routePoints.length === 0) return;
 
           const tripCard = document.createElement('div');
           tripCard.className = 'trip-card';
+          tripCard.setAttribute('onclick', 'toggleCard(this)');
 
           let timelineHtml = '';
-          stops.forEach((stop) => {
-            const mapButton = stop.link 
-              ? `<a href="${stop.link}" target="_blank" class="btn-map">
+          const totalPoints = routePoints.length;
+
+          routePoints.forEach((point, pIndex) => {
+            const mapButton = point.link 
+              ? `<a href="${point.link}" target="_blank" class="btn-map" onclick="event.stopPropagation()">
                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                    Ver Mapa
                  </a>`
               : '';
 
+            let dotClass = 'dot-stop'; 
+            if (pIndex === 0) {
+              dotClass = 'dot-start'; 
+            } else if (pIndex === totalPoints - 1) {
+              dotClass = 'dot-end'; 
+            }
+
+            let kmHtml = '';
+            if (point.kmToNext && pIndex < totalPoints - 1) {
+              kmHtml = `
+                <div class="km-badge">
+                  ${point.kmToNext}
+                </div>
+              `;
+            }
+
             timelineHtml += `
               <div class="timeline-item">
-                <div class="timeline-dot"></div>
+                <div class="timeline-dot ${dotClass}"></div>
                 <div class="location-info">
-                  <span class="location-name">${stop.name}</span>
+                  <span class="location-name">${point.name}</span>
                   ${mapButton}
                 </div>
+                ${kmHtml}
               </div>
             `;
           });
@@ -1416,34 +1543,41 @@
 
           tripCard.innerHTML = `
             <div class="trip-header">
-              <div class="trip-info">
-                <span class="trip-title">Viagem ${index + 1}</span>
-                ${dateBadgeHtml}
+              <div class="trip-header-main">
+                <div class="trip-info">
+                  <span class="trip-title">${tripTitleText}</span>
+                  ${dateBadgeHtml}
+                </div>
               </div>
               <div class="trip-price-box">
                 <span class="trip-price-label">Valor dessa Corrida</span>
                 <span class="trip-price-val">${formatCurrency(priceVal)}</span>
               </div>
             </div>
-            <div class="timeline">
-              ${timelineHtml}
+            <div class="trip-body">
+              <div class="timeline">
+                ${timelineHtml}
+              </div>
+            </div>
+            <div class="card-footer-toggle">
+              <div class="toggle-arrow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
             </div>
           `;
 
           container.appendChild(tripCard);
         });
 
-        if (data.length >= 50 && data[49]) {
-          const kmsTotalNum = parseNumber(data[49][0]);
-          const valorSemDesconto = kmsTotalNum * 2;
-          const valorDescontado = valorSemDesconto - grandTotal;
-          const kmsNaoCobrados = kmsTotalNum - (grandTotal / 2);
+        // Cálculo dos totais usando a soma acumulada dos KMs amostrados no site
+        const valorSemDesconto = grandKmsTotal * 2;
+        const valorDescontado = valorSemDesconto - grandTotal;
+        const kmsNaoCobrados = grandKmsTotal - (grandTotal / 2);
 
-          document.getElementById('cell-a50').innerText = kmsTotalNum ? kmsTotalNum + ' km' : '-';
-          document.getElementById('val-sem-desconto').innerText = formatCurrency(valorSemDesconto);
-          document.getElementById('val-com-desconto').innerText = formatCurrency(valorDescontado > 0 ? valorDescontado : 0);
-          document.getElementById('kms-nao-cobrados').innerText = (kmsNaoCobrados > 0 ? kmsNaoCobrados.toFixed(1) : '0') + ' km';
-        }
+        document.getElementById('cell-a50').innerText = grandKmsTotal > 0 ? grandKmsTotal.toFixed(1) + ' km' : '-';
+        document.getElementById('val-sem-desconto').innerText = formatCurrency(valorSemDesconto);
+        document.getElementById('val-com-desconto').innerText = formatCurrency(valorDescontado > 0 ? valorDescontado : 0);
+        document.getElementById('kms-nao-cobrados').innerText = (kmsNaoCobrados > 0 ? kmsNaoCobrados.toFixed(1) : '0') + ' km';
 
         document.getElementById('total-amount').innerText = formatCurrency(grandTotal);
       },
@@ -1455,4 +1589,3 @@
   </script>
 </body>
 </html>
-
