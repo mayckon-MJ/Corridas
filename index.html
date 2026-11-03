@@ -57,7 +57,6 @@
       cursor: pointer;
     }
 
-    /* Efeito de pulsação verde ao redor da foto */
     .avatar-wrapper::before {
       content: '';
       position: absolute;
@@ -524,7 +523,7 @@
       transform: scale(1.08);
     }
 
-    /* Tela Cheia - Sobre Mim */
+    /* Tela Cheia - Sobre Mim e Histórico */
     .full-screen-modal {
       display: none;
       position: fixed;
@@ -562,6 +561,29 @@
 
     .btn-back:hover {
       background: var(--accent);
+      color: white;
+    }
+
+    .btn-delete-history {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #FEF2F2;
+      color: #DC2626;
+      border: 1px solid #FCA5A5;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-delete-history:hover {
+      background: #DC2626;
       color: white;
     }
 
@@ -635,6 +657,201 @@
       font-weight: 600;
       color: var(--text);
     }
+
+    /* --- ESTILOS DA PASTA AMARELA DO WINDOWS & BOTÕES --- */
+    .archive-actions-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 800px;
+      margin: 0 auto 16px auto;
+      padding: 0 4px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .action-buttons-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-archive, .btn-clear-sheet {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #0F172A;
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .btn-clear-sheet {
+      background: #DC2626;
+    }
+
+    .btn-archive:hover {
+      background: #1E293B;
+      transform: translateY(-1px);
+    }
+
+    .btn-clear-sheet:hover {
+      background: #B91C1C;
+      transform: translateY(-1px);
+    }
+
+    .folder-container {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 10px;
+      transition: background 0.2s;
+      user-select: none;
+    }
+
+    .folder-container:hover {
+      background: #E2E8F0;
+    }
+
+    .win-folder-icon {
+      width: 38px;
+      height: 30px;
+      position: relative;
+    }
+
+    .win-folder-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 16px;
+      height: 8px;
+      background: #D9A406;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .win-folder-body {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 38px;
+      height: 25px;
+      background: linear-gradient(180deg, #FFDE59 0%, #FFC700 100%);
+      border-radius: 0 4px 4px 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      border-top: 1.5px solid #FFE885;
+    }
+
+    .folder-label {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #1E293B;
+    }
+
+    /* Modal de Senha */
+    .password-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 30000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .password-modal.active {
+      display: flex;
+    }
+
+    .password-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .password-card h3 {
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .password-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .password-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      outline: none;
+      text-align: center;
+    }
+
+    .password-input:focus {
+      border-color: var(--accent);
+    }
+
+    .password-btns {
+      display: flex;
+      gap: 10px;
+    }
+
+    .password-btns button {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-confirm-pass {
+      background: var(--green);
+      color: white;
+    }
+
+    .btn-cancel-pass {
+      background: #E2E8F0;
+      color: var(--text);
+    }
+
+    .month-folder {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #F8FAFC;
+      cursor: pointer;
+      margin: 6px;
+      transition: background 0.2s;
+    }
+
+    .month-folder:hover {
+      background: #EFF6FF;
+      border-color: #BFDBFE;
+    }
   </style>
 </head>
 <body>
@@ -647,6 +864,28 @@
       <h1>Mayckon</h1>
       <p>Relatório de Viagens & Transporte Privado</p>
     </header>
+
+    <!-- Barra com Pasta Amarela, Arquivar e Zerar Mês -->
+    <div class="archive-actions-bar">
+      <div class="folder-container" onclick="openHistoryModal()">
+        <div class="win-folder-icon">
+          <div class="win-folder-back"></div>
+          <div class="win-folder-body"></div>
+        </div>
+        <span class="folder-label">Histórico</span>
+      </div>
+
+      <div class="action-buttons-group">
+        <button class="btn-archive" onclick="openPasswordModal('archive')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+          Arquivar
+        </button>
+        <button class="btn-clear-sheet" onclick="openPasswordModal('clear')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          Zerar Mês
+        </button>
+      </div>
+    </div>
 
     <div style="
       max-width: 450px;
@@ -716,6 +955,43 @@
     </div>
   </div>
 
+  <!-- Tela Cheia: Histórico de Corridas Arquivadas -->
+  <div class="full-screen-modal" id="history-modal">
+    <button class="btn-back" onclick="closeHistoryModal()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Voltar
+    </button>
+    <button class="btn-delete-history" onclick="promptDeleteFolder()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+      Apagar
+    </button>
+    <div class="about-content">
+      <h1 style="font-size: 1.25rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 20px;">Histórico de Corridas</h1>
+      
+      <div class="about-section">
+        <h2>Pastas de Meses Arquivados</h2>
+        <div id="history-months-list">
+          <p style="font-size: 0.88rem; color: var(--text-muted);" id="no-history-msg">Nenhum mês arquivado ainda.</p>
+        </div>
+      </div>
+
+      <div id="archived-trips-detail" style="width: 100%; text-align: left;"></div>
+    </div>
+  </div>
+
+  <!-- Modal para Senha -->
+  <div class="password-modal" id="password-modal">
+    <div class="password-card">
+      <h3 id="password-modal-title">Digite a Senha</h3>
+      <p id="password-modal-desc">Digite a senha para prosseguir com a ação.</p>
+      <input type="password" id="archive-pass-input" class="password-input" placeholder="Digite a senha...">
+      <div class="password-btns">
+        <button class="btn-cancel-pass" onclick="closePasswordModal()">Cancelar</button>
+        <button class="btn-confirm-pass" onclick="verifyPasswordAction()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal para Ampliar Foto de Perfil -->
   <div class="image-modal" id="image-modal" onclick="closeModal(event)">
     <button class="modal-close-btn" onclick="closeModalDirect()" aria-label="Fechar">&times;</button>
@@ -761,20 +1037,6 @@
     </div>
   </div>
   
-  <!-- Bloco de Informações sobre Valores e Regras -->
-  <div class="info-card">
-    <div class="info-card-header">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-      <span>Informações de Tarifa & Observações</span>
-    </div>
-    <ul>
-      <li>Eu cobro o mesmo valor que o aplicativo me paga.</li>       
-      <li>Valor base cobrado: <strong>R$ 2,00 por km rodado</strong>.</li>
-      <li>Se houver o acréscimo de <strong>+ R$ 4,00 do Etanol</strong> ao final da corrida, é porque eu não estava em operação (trabalhando) no momento.</li>
-      <li>Caso não haja esse valor adicional, é porque após o desembarque permaneci conectado e trabalhando nos aplicativos (Uber/99) ou eu já estava trabalhando antes.</li>
-      <li><strong>Os +4 reais é para pagar só o combustivel de volta. não irei cobrar os 2 reais por kM para voltar para casa.</strong></li>
-    </ul>
-  </div>
 
   <div style="text-align: center; width: 100%;">
     <button onclick="openAboutModal()" style="
@@ -809,11 +1071,14 @@
 
       <div class="about-section">
         <h2>Meu foco em trabalhar na Uber e 99</h2>
+        
         <p>Eu trabalho como motorista de aplicativo pelas plataformas Uber e 99. Mantenho o foco total na direção e fico calado durante a corrida toda, só respondo o que me perguntam para garantir uma viagem tranquila e segura para todos.</p>
+        <p style="padding: 5px; text-align: center;"><strong>Meu Perfil Uber e 99</strong></p>
+        <div style="display: flex; justify-content: center; gap: 16px; align-items: center; flex-wrap: wrap;">  
+  <img src="https://i.ibb.co/gLwp88SF/Screenshot-20261103-124636.png" alt="Print do Perfil Uber" style="width: 170px; height: 350px; object-fit: cover; border-radius: 12px; border: 1px solid #E2E8F0; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);">
+  <img src="https://i.ibb.co/FpgD3FG/Screenshot-20261103-123719.png" alt="Print do Perfil 99" style="width: 170px; height: 350px; object-fit: cover; border-radius: 12px; border: 1px solid #E2E8F0; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);">
         </div>
-      
-       <p><strong style="text-align:center;">Minhas avaliações nos aplicativos</strong></p> 
-     
+        </div>    
       
       <div class="about-section">
         <h2>Como os Aplicativos me pagam</h2>
@@ -823,7 +1088,23 @@
           <img style="width: 200px; height: 400px;" src="https://i.ibb.co/0V8kV9DX/Screenshot-20261102-162755.png" alt="Print de corrida 1">
           <p>Essa corrida está pagando um valor ótimo, acima dos:<br> <strong style="text-align: center; background: #fadaac; border-radius: 30px; padding: 3px;">R$ 2,00/km</strong></p>
           <img style="width: 200px; height: 400px;" src="https://i.ibb.co/fVX966yK/1793658949328.jpg" alt="Print de corrida 2">
+          <br>
         </div>
+        
+          <!-- Bloco de Informações sobre Valores e Regras -->
+  <div class="info-card">
+    <div class="info-card-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+      <span>Informações de Tarifa & Observações</span>
+    </div>
+    <ul>
+      <li>Eu cobro o mesmo valor que o aplicativo me paga.</li>       
+      <li>Valor base cobrado: <strong>R$ 2,00 por km rodado</strong>.</li>
+      <li>Se houver o acréscimo de <strong>+ R$ 4,00 do Etanol</strong> ao final da corrida, é porque eu não estava em operação (trabalhando) no momento.</li>
+      <li>Caso não haja esse valor adicional, é porque após o desembarque permaneci conectado e trabalhando nos aplicativos (Uber/99) ou eu já estava trabalhando antes.</li>
+      <li><strong>Os +4 reais é para pagar só o combustivel de volta. não irei cobrar os 2 reais por kM para voltar para casa.</strong></li>
+    </ul>
+  </div>
       </div>
 
       <div class="about-section">
@@ -857,6 +1138,9 @@
 
   <script>
     const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSm3QZVwBBSAHyO4gFLcW6NtMEcNkh-Vw9ddqPuMrihoBMZ_MhQgrsVoeiGtiaEgJqpOVPZZyoLupV7/pub?output=csv';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwLnH63ReGFr8MZaRPqAc2JKsBseOwkgTotnIjhjHKNcW-dpL7-T9R-oqHTLIJKL8cxBQ/exec';
+
+    let currentActionType = '';
 
     function openModal() {
       const modal = document.getElementById('image-modal');
@@ -883,10 +1167,158 @@
       document.getElementById('about-modal').classList.remove('active');
     }
 
+    function openHistoryModal() {
+      document.getElementById('history-modal').classList.add('active');
+      renderHistoryFolders();
+    }
+
+    function closeHistoryModal() {
+      document.getElementById('history-modal').classList.remove('active');
+    }
+
+    function openPasswordModal(action) {
+      currentActionType = action;
+      document.getElementById('archive-pass-input').value = '';
+      
+      const title = document.getElementById('password-modal-title');
+      const desc = document.getElementById('password-modal-desc');
+
+      if (action === 'archive') {
+        title.innerText = 'Digite a Senha (Arquivar)';
+        desc.innerText = 'Digite a senha para arquivar as corridas do mês atual.';
+      } else {
+        title.innerText = 'Digite a Senha (Zerar Mês)';
+        desc.innerText = '⚠️ Atenção: Isso limpará os registros do mês atual!';
+      }
+
+      document.getElementById('password-modal').classList.add('active');
+    }
+
+    function closePasswordModal() {
+      document.getElementById('password-modal').classList.remove('active');
+    }
+
+    function verifyPasswordAction() {
+      const pass = document.getElementById('archive-pass-input').value;
+      if (pass === 'H@va1lhas') {
+        closePasswordModal();
+        if (currentActionType === 'archive') {
+          archiveCurrentTrips();
+          alert('Corridas arquivadas com sucesso!');
+        } else {
+          clearSpreadsheetData();
+        }
+      } else {
+        alert('Senha incorreta! Tente novamente.');
+      }
+    }
+
+    function archiveCurrentTrips() {
+      const monthYear = 'Novembro_2026';
+      let history = JSON.parse(localStorage.getItem('trips_history') || '{}');
+      const containerHTML = document.getElementById('trips-container').innerHTML;
+      history[monthYear] = containerHTML;
+      localStorage.setItem('trips_history', JSON.stringify(history));
+      renderHistoryFolders();
+    }
+
+    function clearSpreadsheetData() {
+      if (APPS_SCRIPT_URL.includes('COLE_AQUI')) {
+        alert('Por favor, configure a URL no código do site primeiro.');
+        return;
+      }
+
+      alert('Zerando o mês... Aguarde um instante.');
+
+      fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(() => {
+        alert('Mês zerado com sucesso! Atualize a página em alguns segundos.');
+        location.reload();
+      }).catch(err => {
+        alert('Erro ao zerar o mês: ' + err);
+      });
+    }
+
+    function renderHistoryFolders() {
+      const history = JSON.parse(localStorage.getItem('trips_history') || '{}');
+      const monthsList = document.getElementById('history-months-list');
+      const keys = Object.keys(history);
+
+      if (keys.length === 0) {
+        monthsList.innerHTML = '<p style="font-size: 0.88rem; color: var(--text-muted);">Nenhum mês arquivado ainda.</p>';
+        document.getElementById('archived-trips-detail').innerHTML = '';
+        return;
+      }
+
+      monthsList.innerHTML = '';
+      keys.forEach(month => {
+        const folder = document.createElement('div');
+        folder.className = 'month-folder';
+        folder.innerHTML = `
+          <div class="win-folder-icon" style="transform: scale(0.8);">
+            <div class="win-folder-back"></div>
+            <div class="win-folder-body"></div>
+          </div>
+          <span style="font-weight: 700; font-size: 0.9rem; color: #1E293B;">${month.replace('_', ' ')}</span>
+        `;
+        folder.onclick = () => showArchivedMonth(month);
+        monthsList.appendChild(folder);
+      });
+    }
+
+    function showArchivedMonth(month) {
+      const history = JSON.parse(localStorage.getItem('trips_history') || '{}');
+      const detail = document.getElementById('archived-trips-detail');
+      detail.innerHTML = `<h4 style="margin-bottom: 12px; color: var(--accent);">Corridas de ${month.replace('_', ' ')}:</h4>` + (history[month] || '');
+    }
+
+    function promptDeleteFolder() {
+      const history = JSON.parse(localStorage.getItem('trips_history') || '{}');
+      const keys = Object.keys(history);
+
+      if (keys.length === 0) {
+        alert('Não há nenhuma pasta no histórico para apagar.');
+        return;
+      }
+
+      let formattedList = keys.map((k, i) => `${i + 1}. ${k.replace('_', ' ')}`).join('\n');
+      let folderName = prompt("Digite o nome ou o número da pasta que deseja apagar:\n\nPastas disponíveis:\n" + formattedList);
+
+      if (!folderName) return;
+
+      folderName = folderName.trim();
+      let targetKey = '';
+
+      if (!isNaN(folderName) && parseInt(folderName) > 0 && parseInt(folderName) <= keys.length) {
+        targetKey = keys[parseInt(folderName) - 1];
+      } else {
+        targetKey = keys.find(k => k.toLowerCase() === folderName.toLowerCase() || k.replace('_', ' ').toLowerCase() === folderName.toLowerCase());
+      }
+
+      if (targetKey) {
+        if (confirm(`Tem certeza que deseja apagar a pasta "${targetKey.replace('_', ' ')}"?`)) {
+          delete history[targetKey];
+          localStorage.setItem('trips_history', JSON.stringify(history));
+          renderHistoryFolders();
+          document.getElementById('archived-trips-detail').innerHTML = '';
+          alert('Pasta removida com sucesso!');
+        }
+      } else {
+        alert('Pasta não encontrada. Certifique-se de digitar o nome ou número correto.');
+      }
+    }
+
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
         closeModalDirect();
         closeAboutModal();
+        closeHistoryModal();
+        closePasswordModal();
       }
     });
 
@@ -931,20 +1363,15 @@
         container.innerHTML = '';
 
         data.forEach((row, index) => {
-          // Interrompe o processamento na linha 49 (índice 48 em diante)
           if (index >= 48) return;
-
           if (!row || row.length < 2) return;
 
-          // Coluna A (Índice 0): Valor da corrida
           const rawPrice = row[0];
           const priceVal = parseCurrency(rawPrice);
           grandTotal += priceVal;
 
-          // Coluna B (Índice 1): Data e Horário
           const dateTimeStr = row[1] ? row[1].trim() : '';
 
-          // Colunas C em diante (Índice 2 em diante): Pares de Nome e Link
           const stops = [];
           for (let i = 2; i < row.length; i += 2) {
             const name = row[i] ? row[i].trim() : '';
@@ -1006,7 +1433,6 @@
           container.appendChild(tripCard);
         });
 
-        // Atualiza os cartões de cálculo baseados na Linha 50 (índice 49)
         if (data.length >= 50 && data[49]) {
           const kmsTotalNum = parseNumber(data[49][0]);
           const valorSemDesconto = kmsTotalNum * 2;
@@ -1023,9 +1449,10 @@
       },
       error: function(err) {
         document.getElementById('trips-container').innerHTML = 
-          '<div class="error-msg">Erro ao carregar a planilha. Certifique-se de que ela está publicada na web como CSV.</div>';
+          '<div class="error-msg">Erro ao carregar os dados. Certifique-se de que a origem está publicada na web como CSV.</div>';
       }
     });
   </script>
 </body>
 </html>
+
