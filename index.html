@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1161,6 +1159,48 @@
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--card-border), transparent);
     }
+  
+  /* Notificação Toast Cyberpunk para o PIX */
+.pix-toast {
+  position: fixed;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 20, 38, 0.95);
+  border: 1px solid var(--primary-cyan);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.4), inset 0 0 10px rgba(0, 242, 254, 0.1);
+  color: var(--text-main);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 99999;
+  backdrop-filter: blur(10px);
+  transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+
+.pix-toast.active {
+  bottom: 30px;
+}
+
+.pix-toast-icon {
+  width: 22px;
+  height: 22px;
+  background: rgba(0, 255, 137, 0.2);
+  border: 1px solid var(--neon-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--neon-green);
+  font-size: 12px;
+}
+
   </style>
 </head>
 <body>
@@ -1173,28 +1213,6 @@
       <h1>Mayckon</h1>
       <p>Relatório de Viagens & Transporte Privado</p>
     </header>
-
-    <!-- Barra com Pasta Amarela, Arquivar e Zerar Mês -->
-    <div class="archive-actions-bar">
-      <div class="folder-container" onclick="openHistoryModal()">
-        <div class="win-folder-icon">
-          <div class="win-folder-back"></div>
-          <div class="win-folder-body"></div>
-        </div>
-        <span class="folder-label">Histórico</span>
-      </div>
-
-      <div class="action-buttons-group">
-        <button class="btn-archive" onclick="openPasswordModal('archive')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
-          Arquivar
-        </button>
-        <button class="btn-clear-sheet" onclick="openPasswordModal('clear')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-          Zerar Mês
-        </button>
-      </div>
-    </div>
 
     <!-- Bloco Período Futurista -->
     <div style="
@@ -1341,6 +1359,29 @@
       </p>
     </div>
   </div>
+  
+    <!-- Barra com Pasta Amarela, Arquivar e Zerar Mês -->
+    <div class="archive-actions-bar">
+      <div class="folder-container" onclick="openHistoryModal()">
+        <div class="win-folder-icon">
+          <div class="win-folder-back"></div>
+          <div class="win-folder-body"></div>
+        </div>
+        <span class="folder-label">Histórico</span>
+      </div>
+
+      <div class="action-buttons-group">
+        <button class="btn-archive" onclick="openPasswordModal('archive')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+          Arquivar
+        </button>
+        <button class="btn-clear-sheet" onclick="openPasswordModal('clear')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          Zerar Mês
+        </button>
+      </div>
+    </div>
+
 
   <div style="text-align: center; width: 100%;">
     <button onclick="openAboutModal()" style="
@@ -1395,6 +1436,13 @@
           <img style="width: 200px; height: 400px;" src="https://i.ibb.co/fVX966yK/1793658949328.jpg" alt="Print de corrida 2">
           <br>
         </div>
+        
+        <!-- Toast Notificação PIX -->
+<div id="pix-toast" class="pix-toast">
+  <div class="pix-toast-icon">✓</div>
+  <span>Chave PIX copiada com sucesso!</span>
+</div>
+
         
         <!-- Bloco de Informações sobre Valores e Regras -->
         <div class="info-card" style="margin-bottom: 0;">
@@ -1645,13 +1693,32 @@
     }
 
     function copyPix() {
-      const pixKey = document.getElementById('pix-key').innerText;
-      navigator.clipboard.writeText(pixKey).then(() => {
-        alert('Chave PIX copiada com sucesso!');
-      }).catch(err => {
-        alert('Erro ao copiar. A chave é: ' + pixKey);
-      });
-    }
+  const pixKey = document.getElementById('pix-key').innerText;
+  
+  navigator.clipboard.writeText(pixKey).then(() => {
+    showPixToast();
+  }).catch(err => {
+    // Fallback caso ocorra algum erro
+    showPixToast('Erro ao copiar a chave PIX!');
+  });
+}
+
+function showPixToast(customMsg) {
+  const toast = document.getElementById('pix-toast');
+  if (customMsg) {
+    toast.querySelector('span').innerText = customMsg;
+  } else {
+    toast.querySelector('span').innerText = 'Chave PIX copiada com sucesso!';
+  }
+  
+  toast.classList.add('active');
+  
+  // Oculta a notificação após 3 segundos
+  setTimeout(() => {
+    toast.classList.remove('active');
+  }, 3000);
+}
+
 
     function toggleCard(cardElement) {
       cardElement.classList.toggle('expanded');
@@ -1900,3 +1967,4 @@
   </script>
 </body>
 </html>
+
