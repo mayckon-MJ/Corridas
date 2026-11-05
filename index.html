@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -322,10 +323,12 @@
       padding: 20px 24px;
       margin-bottom: 24px;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
       backdrop-filter: blur(12px);
       box-shadow: 0 0 25px rgba(0, 255, 137, 0.1);
+      text-align: center;
     }
 
     .summary-card span {
@@ -333,6 +336,7 @@
       color: var(--text-main);
       font-weight: 700;
       letter-spacing: 0.5px;
+      margin-bottom: 6px;
     }
 
     .summary-card strong {
@@ -340,6 +344,23 @@
       color: var(--neon-green);
       font-weight: 900;
       text-shadow: 0 0 15px rgba(0, 255, 137, 0.4);
+      display: inline-block;
+      animation: pulse-scale 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse-scale {
+      0% {
+        transform: scale(1);
+        text-shadow: 0 0 15px rgba(0, 255, 137, 0.4);
+      }
+      50% {
+        transform: scale(1.15);
+        text-shadow: 0 0 25px rgba(0, 255, 137, 0.8);
+      }
+      100% {
+        transform: scale(1);
+        text-shadow: 0 0 15px rgba(0, 255, 137, 0.4);
+      }
     }
 
     /* Informações de Tarifas */
@@ -675,6 +696,22 @@
       margin: 6px 0 12px 0;
     }
 
+    .return-red-ball {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      background: linear-gradient(135deg, var(--neon-magenta), var(--neon-pink));
+      border: 1px solid rgba(255, 8, 68, 0.5);
+      padding: 3px 12px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(255, 8, 68, 0.5);
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
     .location-info {
       display: flex;
       flex-wrap: wrap;
@@ -716,6 +753,51 @@
 
     .btn-map svg {
       fill: currentColor;
+    }
+
+    /* Estilo do Novo Bloco de Cálculo por Corrida */
+    .trip-calc-summary {
+      margin-top: 18px;
+      padding: 12px 16px;
+      background: rgba(0, 242, 254, 0.04);
+      border: 1px dashed rgba(0, 242, 254, 0.25);
+      border-radius: 12px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .trip-calc-summary-title {
+      font-weight: 800;
+      color: var(--primary-cyan);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      font-size: 0.78rem;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .trip-calc-line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+
+    .trip-calc-line:last-child {
+      margin-bottom: 0;
+    }
+
+    .return-fee-tag {
+      background: rgba(255, 8, 68, 0.15);
+      color: var(--neon-pink);
+      border: 1px solid rgba(255, 8, 68, 0.4);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      margin-top: 6px;
+      display: inline-block;
     }
 
     .loading, .error-msg {
@@ -1155,6 +1237,8 @@
       <span style="font-size: 1rem;">Total Acumulado a pagar com desconto</span>
       <strong id="total-amount">R$ 0,00</strong>
     </div>
+    
+    <h2 style="margin: 20px; text-align: center;">Corridas</h2>
 
     <div id="trips-container" class="trips-list">
       <div class="loading">Carregando dados das viagens...</div>
@@ -1569,7 +1653,9 @@
         const data = results.data;
         const container = document.getElementById('trips-container');
         let grandTotal = 0;
-        let grandKmsTotal = 0; // Soma acumulada dos KMs exibidos nas corridas
+        let grandKmsTotal = 0; // Soma acumulada correta dos KMs exibidos nas corridas
+        let grandExtraReturnTotal = 0; // Acumulador das taxas de R$ 4,00 de Volta para casa
+        let grandReturnHomeCount = 0; // Contar quantas corridas têm Volta para casa para adicionar 11km a cada uma
 
         if (!data || data.length === 0) {
           container.innerHTML = '<div class="error-msg">Nenhuma viagem encontrada.</div>';
@@ -1596,6 +1682,8 @@
 
           // A partir da Coluna D (índice 3): Mapeamento das localizações e KMs intermediários
           const routePoints = [];
+          let tripKmTotal = 0;
+          let hasReturnHome = false;
           
           let i = 3;
           while (i < row.length) {
@@ -1610,9 +1698,20 @@
                 kmToNext: kmText
               });
 
-              // Somando os kms diretamente para o total acumulado
-              if (kmText) {
-                grandKmsTotal += parseNumber(kmText);
+              // Verifica se o texto "volta para casa" está no nome da parada ou no distintivo do trecho (kmText)
+              if (
+                name.toLowerCase().includes('volta para casa') || 
+                name.toLowerCase().includes('voltando pra casa') ||
+                kmText.toLowerCase().includes('volta para casa') ||
+                kmText.toLowerCase().includes('voltando pra casa')
+              ) {
+                hasReturnHome = true;
+              }
+
+              // Somar apenas uma vez cada KM listado no trecho
+              if (kmText && !isNaN(parseNumber(kmText))) {
+                const parsedKm = parseNumber(kmText);
+                tripKmTotal += parsedKm;
               }
             }
 
@@ -1626,11 +1725,20 @@
               const link = row[j + 1] ? row[j + 1].trim() : '';
               if (name) {
                 routePoints.push({ name, link, kmToNext: '' });
+                if (name.toLowerCase().includes('volta para casa') || name.toLowerCase().includes('voltando pra casa')) {
+                  hasReturnHome = true;
+                }
               }
             }
           }
 
           if (routePoints.length === 0) return;
+
+          grandKmsTotal += tripKmTotal;
+          if (hasReturnHome) {
+            grandExtraReturnTotal += 4;
+            grandReturnHomeCount++;
+          }
 
           const tripCard = document.createElement('div');
           tripCard.className = 'trip-card';
@@ -1639,13 +1747,14 @@
           let timelineHtml = '';
           const totalPoints = routePoints.length;
 
-          routePoints.forEach((point, pIndex) => {
+          routePoints.forEach((point, pIndex) => {           
             const mapButton = point.link 
               ? `<a href="${point.link}" target="_blank" class="btn-map" onclick="event.stopPropagation()">
-                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                   <img src="https://i.ibb.co/Df5cQ0dK/location-location-pin-location-icon-transparent-free-png.png" alt="Mapa" style="width: 35px; height: 35px; object-fit: contain;">
                    Ver Mapa
                  </a>`
               : '';
+
 
             let dotClass = 'dot-stop'; 
             if (pIndex === 0) {
@@ -1663,11 +1772,21 @@
               `;
             }
 
+            const isPointReturnHome = 
+              point.name.toLowerCase().includes('volta para casa') || 
+              point.name.toLowerCase().includes('voltando pra casa') ||
+              point.kmToNext.toLowerCase().includes('volta para casa') ||
+              point.kmToNext.toLowerCase().includes('voltando pra casa');
+
+            const redBallHtml = isPointReturnHome 
+              ? `<span class="return-red-ball">11 km por 4 reais</span>` 
+              : '';
+
             timelineHtml += `
               <div class="timeline-item">
                 <div class="timeline-dot ${dotClass}"></div>
                 <div class="location-info">
-                  <span class="location-name">${point.name}</span>
+                  <span class="location-name">${point.name}${redBallHtml}</span>
                   ${mapButton}
                 </div>
                 ${kmHtml}
@@ -1675,9 +1794,44 @@
             `;
           });
 
+          // Cálculo dos valores da corrida individual
+          const basePriceKm = tripKmTotal * 2;
+          let extraReturnText = '';
+
+          if (hasReturnHome) {
+            extraReturnText = `
+              <div class="trip-calc-line">
+                <span>Adicional para voltar para casa</span>
+                <strong>R$ 4,00</strong>
+              </div>
+            `;
+          }
+
+          const calcSummaryHtml = `
+            <div class="trip-calc-summary">
+              <div class="trip-calc-summary-title">
+                <span>Resumo da Corrida</span>
+                <span>R$ 2,00 / KM</span>
+              </div>
+              <div class="trip-calc-line">
+                <span>Soma dos KMs:</span>
+                <strong>${tripKmTotal.toFixed(1)} km</strong>
+              </div>
+              <div class="trip-calc-line">
+                <span>Valor Base (${tripKmTotal.toFixed(1)} km × R$ 2,00):</span>
+                <strong>${formatCurrency(basePriceKm)}</strong>
+              </div>
+              ${extraReturnText}
+              <div class="trip-calc-line" style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed rgba(0, 242, 254, 0.2);">
+                <span>Valor com desconto:</span>
+                <strong style="color: var(--neon-green); font-size: 0.95rem;">${formatCurrency(priceVal)}</strong>
+              </div>
+            </div>
+          `;
+
           const dateBadgeHtml = dateTimeStr 
             ? `<div class="trip-date">
-                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 16 14"></polyline></svg>
+                 <img src="https://i.ibb.co/5pywwNB/a-colorful-cartoonish-alarm-clock-featuring-a-round-face-with-blue-hands-and-two-blue-bells-on-top-p.png" alt="Relógio" style="width: 40px; height: 40px; object-fit: contain;">
                  ${dateTimeStr}
                </div>` 
             : '';
@@ -1699,6 +1853,7 @@
               <div class="timeline">
                 ${timelineHtml}
               </div>
+              ${calcSummaryHtml}
             </div>
             <div class="card-footer-toggle">
               <div class="toggle-arrow">
@@ -1710,10 +1865,10 @@
           container.appendChild(tripCard);
         });
 
-        // Cálculo dos totais usando a soma acumulada dos KMs amostrados no site
-        const valorSemDesconto = grandKmsTotal * 2;
+        // Cálculo dos totais incluindo o valor total dos adicionais de volta para casa e os 11km não cobrados por ocorrência
+        const valorSemDesconto = (grandKmsTotal * 2) + grandExtraReturnTotal;
         const valorDescontado = valorSemDesconto - grandTotal;
-        const kmsNaoCobrados = grandKmsTotal - (grandTotal / 2);
+        const kmsNaoCobrados = (grandKmsTotal - (grandTotal / 2)) + (grandReturnHomeCount * 11);
 
         document.getElementById('cell-a50').innerText = grandKmsTotal > 0 ? grandKmsTotal.toFixed(1) + ' km' : '-';
         document.getElementById('val-sem-desconto').innerText = formatCurrency(valorSemDesconto);
@@ -1730,4 +1885,3 @@
   </script>
 </body>
 </html>
-
