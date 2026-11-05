@@ -148,26 +148,46 @@
       text-transform: uppercase;
     }
 
-    /* Barra de Ações do Arquivo (Cyber Hud) */
+      /* Barra de Ações do Arquivo (Cyber Hud Organizada) */
     .archive-actions-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       max-width: 820px;
       margin: 0 auto 20px auto;
-      padding: 12px 16px;
+      padding: 14px 18px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 16px;
       backdrop-filter: blur(12px);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-      gap: 12px;
-      flex-wrap: wrap;
+      gap: 16px;
     }
 
     .action-buttons-group {
       display: flex;
       gap: 10px;
+      align-items: center;
+    }
+
+    /* Ajuste para telas muito pequenas (celulares estreitos) */
+    @media (max-width: 580px) {
+      .archive-actions-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .folder-container {
+        justify-content: center;
+      }
+      .action-buttons-group {
+        flex-direction: column;
+        width: 100%;
+      }
+      .btn-archive, .btn-clear-sheet {
+        width: 100%;
+        justify-content: center;
+      }
     }
 
     .btn-archive, .btn-clear-sheet {
@@ -267,10 +287,12 @@
       gap: 14px;
       max-width: 820px;
       margin: 0 auto 14px auto;
+      flex-wrap: wrap;
     }
 
     .row-50-card {
       flex: 1;
+      min-width: 220px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 16px;
@@ -1209,32 +1231,21 @@
       </p>
     </div>
 
-    <!-- Quadrados superiores: Kms Total (Linha 50, Col A) e Valor sem Desconto -->
+    <!-- Quadrados superiores: Kms Total, Valor Base e Desconto -->
     <div class="row-50-cards">
       <div class="row-50-card">
         <span>Kms Total Corrido</span>
         <strong id="cell-a50">-</strong>
+        <span>Valor Base Total (× R$ 2,00/km)<br>=</span>
+        <strong id="val-sem-desconto">-</strong>
+        <span>Desconto Aplicado</span>
+        <strong id="val-com-desconto" style="color: #40803b;">-</strong>
       </div>
-      <div class="row-50-card">
-        <span>Valor sem Desconto</span>
-        <strong id="val-sem-desconto">R$ 0,00</strong>
-      </div>
-    </div>
-
-    <!-- Quadrados inferiores: Valor Descontado (Economizado) e Kms não cobrados -->
-    <div class="row-50-cards">
-      <div class="row-50-card">
-        <span>Kms não cobrados</span>
-        <strong id="kms-nao-cobrados">-</strong>
-      </div>
-      <div class="row-50-card">
-        <span>Valor Descontado</span>
-        <strong id="val-com-desconto">R$ 0,00</strong>
-      </div>
+            
     </div>
     
     <div class="summary-card">
-      <span style="font-size: 1rem;">Total Acumulado a pagar com desconto</span>
+      <span style="font-size: 1rem;">Total Acumulado a Pagar com Desconto</span>
       <strong id="total-amount">R$ 0,00</strong>
     </div>
     
@@ -1655,7 +1666,7 @@
         let grandTotal = 0;
         let grandKmsTotal = 0; // Soma acumulada correta dos KMs exibidos nas corridas
         let grandExtraReturnTotal = 0; // Acumulador das taxas de R$ 4,00 de Volta para casa
-        let grandReturnHomeCount = 0; // Contar quantas corridas têm Volta para casa para adicionar 11km a cada uma
+        let grandReturnHomeCount = 0; // Contar quantas ocorrências de "Volta para casa" existem para adicionar 11km a cada uma
 
         if (!data || data.length === 0) {
           container.innerHTML = '<div class="error-msg">Nenhuma viagem encontrada.</div>';
@@ -1698,7 +1709,7 @@
                 kmToNext: kmText
               });
 
-              // Verifica se o texto "volta para casa" está no nome da parada ou no distintivo do trecho (kmText)
+              // Verifica se o texto "volta para casa" está estritamente na opção de KM/distância ou no nome
               if (
                 name.toLowerCase().includes('volta para casa') || 
                 name.toLowerCase().includes('voltando pra casa') ||
@@ -1772,14 +1783,15 @@
               `;
             }
 
-            const isPointReturnHome = 
-              point.name.toLowerCase().includes('volta para casa') || 
-              point.name.toLowerCase().includes('voltando pra casa') ||
-              point.kmToNext.toLowerCase().includes('volta para casa') ||
-              point.kmToNext.toLowerCase().includes('voltando pra casa');
+            // Exibe a bola vermelha estritamente quando a opção de km traz "volta para casa"
+            const isKmReturnHome = 
+              point.kmToNext.toLowerCase().includes('volta para casa') || 
+              point.kmToNext.toLowerCase().includes('voltando pra casa') ||
+              point.name.toLowerCase().includes('volta para casa') ||
+              point.name.toLowerCase().includes('voltando pra casa');
 
-            const redBallHtml = isPointReturnHome 
-              ? `<span class="return-red-ball">11 km por 4 reais</span>` 
+            const redBallHtml = isKmReturnHome 
+              ? `<span class="return-red-ball" style="font-size: 13px;">↡ 11 km</span>` 
               : '';
 
             timelineHtml += `
@@ -1865,16 +1877,19 @@
           container.appendChild(tripCard);
         });
 
-        // Cálculo dos totais incluindo o valor total dos adicionais de volta para casa e os 11km não cobrados por ocorrência
-        const valorSemDesconto = (grandKmsTotal * 2) + grandExtraReturnTotal;
-        const valorDescontado = valorSemDesconto - grandTotal;
-        const kmsNaoCobrados = (grandKmsTotal - (grandTotal / 2)) + (grandReturnHomeCount * 11);
+        // Cálculo dos KMs totais incluindo os 11km das voltas para casa
+        const totalKmsComVolta = grandKmsTotal + (grandReturnHomeCount * 11);
+        
+        // Multiplica o total de KMs por 2
+        const valorTotalBruto = totalKmsComVolta * 2;
+        
+        // Subtrai o total acumulado a pagar para saber o valor de desconto que houve
+        const descontoCalculado = valorTotalBruto - grandTotal;
 
-        document.getElementById('cell-a50').innerText = grandKmsTotal > 0 ? grandKmsTotal.toFixed(1) + ' km' : '-';
-        document.getElementById('val-sem-desconto').innerText = formatCurrency(valorSemDesconto);
-        document.getElementById('val-com-desconto').innerText = formatCurrency(valorDescontado > 0 ? valorDescontado : 0);
-        document.getElementById('kms-nao-cobrados').innerText = (kmsNaoCobrados > 0 ? kmsNaoCobrados.toFixed(1) : '0') + ' km';
-
+        document.getElementById('cell-a50').innerText = totalKmsComVolta > 0 ? totalKmsComVolta.toFixed(1) + ' km' : '-';
+        document.getElementById('val-sem-desconto').innerText = formatCurrency(valorTotalBruto);
+        document.getElementById('val-com-desconto').innerText = formatCurrency(descontoCalculado > 0 ? descontoCalculado : 0);
+          
         document.getElementById('total-amount').innerText = formatCurrency(grandTotal);
       },
       error: function(err) {
