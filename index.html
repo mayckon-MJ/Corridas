@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -802,11 +803,56 @@
     .trip-calc-line {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 3px;
     }
 
     .trip-calc-line:last-child {
       margin-bottom: 0;
+    }
+
+    /* Linha e Botão de Observação */
+    .trip-obs-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(0, 242, 254, 0.2);
+    }
+
+    .trip-obs-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary-cyan);
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+
+    .btn-view-obs {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.3));
+      color: var(--primary-cyan);
+      border: 1px solid rgba(0, 242, 254, 0.5);
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+    }
+
+    .btn-view-obs:hover {
+      background: var(--primary-cyan);
+      color: #000;
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
+      transform: scale(1.05);
     }
 
     .return-fee-tag {
@@ -1151,6 +1197,86 @@
     .month-folder:hover {
       background: rgba(0, 242, 254, 0.1);
       border-color: var(--primary-cyan);
+      transform: translateY(-2px);
+    }
+
+    /* Modal Bonito de Observação */
+    .obs-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(5, 8, 17, 0.88);
+      backdrop-filter: blur(10px);
+      z-index: 35000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .obs-modal.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .obs-card {
+      background: #0D1426;
+      border: 1px solid var(--primary-cyan);
+      border-radius: 20px;
+      padding: 24px 26px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 0 35px rgba(0, 242, 254, 0.3);
+      position: relative;
+      text-align: left;
+    }
+
+    .obs-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--primary-cyan);
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px dashed rgba(0, 242, 254, 0.25);
+      padding-bottom: 10px;
+    }
+
+    .obs-card-body {
+      font-size: 0.95rem;
+      color: var(--text-main);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .obs-card-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, var(--primary-cyan), var(--secondary-blue));
+      color: #000;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .obs-card-btn:hover {
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.7);
       transform: translateY(-2px);
     }
 
@@ -1509,6 +1635,23 @@
       <img class="modal-img" id="modal-img-src" src="" alt="Foto de Perfil Ampliada">
     </div>
   </div>
+
+  <!-- Modal Cyberpunk de Observação -->
+  <div class="obs-modal" id="obs-modal" onclick="closeObsModal(event)">
+    <div class="obs-card">
+      <div class="obs-card-header">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span>Observação da Corrida</span>
+      </div>
+      <div class="obs-card-body" id="obs-modal-text"></div>
+      <button class="obs-card-btn" onclick="closeObsModalDirect()">Fechar</button>
+    </div>
+  </div>
   
   <br><br>
 
@@ -1749,12 +1892,12 @@
         closePasswordModal();
         if (currentActionType === 'archive') {
           archiveCurrentTrips();
-          alert('Corridas arquivadas com sucesso!');
+          showPixToast('Corridas arquivadas com sucesso!');
         } else {
           clearSpreadsheetData();
         }
       } else {
-        alert('Senha incorreta! Tente novamente.');
+        showPixToast('Senha incorreta! Tente novamente.');
       }
     }
 
@@ -1769,11 +1912,11 @@
 
     function clearSpreadsheetData() {
       if (APPS_SCRIPT_URL.includes('COLE_AQUI')) {
-        alert('Por favor, configure a URL no código do site primeiro.');
+        showPixToast('Por favor, configure a URL no código do site primeiro.');
         return;
       }
 
-      alert('Zerando o mês... Aguarde um instante.');
+      showPixToast('Zerando o mês... Aguarde um instante.');
 
       fetch(APPS_SCRIPT_URL, {
         method: 'POST',
@@ -1782,10 +1925,10 @@
           'Content-Type': 'application/json'
         }
       }).then(() => {
-        alert('Mês zerado com sucesso! Atualize a página em alguns segundos.');
-        location.reload();
+        showPixToast('Mês zerado com sucesso! Atualizando...');
+        setTimeout(() => location.reload(), 1500);
       }).catch(err => {
-        alert('Erro ao zerar o mês: ' + err);
+        showPixToast('Erro ao zerar o mês: ' + err);
       });
     }
 
@@ -1827,7 +1970,7 @@
       const keys = Object.keys(history);
 
       if (keys.length === 0) {
-        alert('Não há nenhuma pasta no histórico para apagar.');
+        showPixToast('Não há nenhuma pasta no histórico para apagar.');
         return;
       }
 
@@ -1851,10 +1994,26 @@
           localStorage.setItem('trips_history', JSON.stringify(history));
           renderHistoryFolders();
           document.getElementById('archived-trips-detail').innerHTML = '';
-          alert('Pasta removida com sucesso!');
+          showPixToast('Pasta removida com sucesso!');
         }
       } else {
-        alert('Pasta não encontrada. Certifique-se de digitar o nome ou número correto.');
+        showPixToast('Pasta não encontrada. Certifique-se de digitar o nome ou número correto.');
+      }
+    }
+
+    /* Funções do Modal Bonito de Observação */
+    function openObsModal(text) {
+      document.getElementById('obs-modal-text').innerText = text || 'Nenhuma observação informada.';
+      document.getElementById('obs-modal').classList.add('active');
+    }
+
+    function closeObsModalDirect() {
+      document.getElementById('obs-modal').classList.remove('active');
+    }
+
+    function closeObsModal(event) {
+      if (event.target.id === 'obs-modal') {
+        closeObsModalDirect();
       }
     }
 
@@ -1864,6 +2023,7 @@
         closeAboutModal();
         closeHistoryModal();
         closePasswordModal();
+        closeObsModalDirect();
       }
     });
 
@@ -1884,32 +2044,29 @@
     }
 
     function copyPix() {
-  const pixKey = document.getElementById('pix-key').innerText;
-  
-  navigator.clipboard.writeText(pixKey).then(() => {
-    showPixToast();
-  }).catch(err => {
-    // Fallback caso ocorra algum erro
-    showPixToast('Erro ao copiar a chave PIX!');
-  });
-}
+      const pixKey = document.getElementById('pix-key').innerText;
+      
+      navigator.clipboard.writeText(pixKey).then(() => {
+        showPixToast();
+      }).catch(err => {
+        showPixToast('Erro ao copiar a chave PIX!');
+      });
+    }
 
-function showPixToast(customMsg) {
-  const toast = document.getElementById('pix-toast');
-  if (customMsg) {
-    toast.querySelector('span').innerText = customMsg;
-  } else {
-    toast.querySelector('span').innerText = 'Chave PIX copiada com sucesso!';
-  }
-  
-  toast.classList.add('active');
-  
-  // Oculta a notificação após 3 segundos
-  setTimeout(() => {
-    toast.classList.remove('active');
-  }, 3000);
-}
-
+    function showPixToast(customMsg) {
+      const toast = document.getElementById('pix-toast');
+      if (customMsg) {
+        toast.querySelector('span').innerText = customMsg;
+      } else {
+        toast.querySelector('span').innerText = 'Chave PIX copiada com sucesso!';
+      }
+      
+      toast.classList.add('active');
+      
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 3000);
+    }
 
     function toggleCard(cardElement) {
       cardElement.classList.toggle('expanded');
@@ -1931,6 +2088,19 @@ function showPixToast(customMsg) {
           return;
         }
 
+        /* Mapeamento das Observações das Linhas 50 a 100 da Planilha (Índices 49 a 99) */
+        const obsMap = {};
+        for (let r = 49; r < Math.min(data.length, 100); r++) {
+          const rowObs = data[r];
+          if (rowObs && rowObs.length >= 2) {
+            const dateId = rowObs[0] ? rowObs[0].trim() : '';
+            const obsText = rowObs[1] ? rowObs[1].trim() : '';
+            if (dateId) {
+              obsMap[dateId] = obsText;
+            }
+          }
+        }
+
         container.innerHTML = '';
 
         data.forEach((row, index) => {
@@ -1948,6 +2118,9 @@ function showPixToast(customMsg) {
           // Coluna C (índice 2): Nome do Passageiro(a)
           const passengerName = row[2] ? row[2].trim() : '';
           const tripTitleText = passengerName ? `Corrida para ${passengerName}` : `Viagem ${index + 1}`;
+
+          // Obter Observação associada usando o ID (Data/Horário da coluna B)
+          const tripObs = obsMap[dateTimeStr] || 'Nenhuma observação registrada para esta corrida.';
 
           // A partir da Coluna D (índice 3): Mapeamento das localizações e KMs intermediários
           const routePoints = [];
@@ -2077,6 +2250,9 @@ function showPixToast(customMsg) {
             `;
           }
 
+          // Escapar aspas simples para segurança na chamada do botão Ver
+          const safeObsText = tripObs.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
           const calcSummaryHtml = `
             <div class="trip-calc-summary">
               <div class="trip-calc-summary-title">
@@ -2096,6 +2272,23 @@ function showPixToast(customMsg) {
                 <span>Valor com desconto:</span>
                 <strong style="color: var(--neon-green); font-size: 0.95rem;">${formatCurrency(priceVal)}</strong>
               </div>
+
+              <!-- Linha de Observação Solicitada -->
+              <div class="trip-obs-line">
+                <span class="trip-obs-label">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  Observação
+                </span>
+                <button class="btn-view-obs" onclick="event.stopPropagation(); openObsModal('${safeObsText}')">
+                  Ver
+                </button>
+              </div>
+
             </div>
           `;
 
@@ -2158,4 +2351,3 @@ function showPixToast(customMsg) {
   </script>
 </body>
 </html>
-
