@@ -1213,9 +1213,9 @@
       </div>
       <h1>Mayckon</h1>
       <p>Relatório de Viagens & Transporte Privado</p>
-      
-      <!-- Bloco de Imagens Rotativas do Carro e Download -->
-<div style="
+
+      <!-- Bloco de Imagens Rotativas do Carro e Detalhes Retráteis -->
+<div class="trip-card" onclick="toggleCard(this)" style="
   max-width: 820px;
   margin: 24px auto;
   padding: 16px 20px;
@@ -1225,11 +1225,12 @@
   backdrop-filter: blur(12px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   text-align: center;
+  cursor: pointer;
 ">
   <!-- Container da Imagem com clique para ampliar -->
-  <div onclick="openModalCar()" style="
-    width: 140px;
-    height: 100px;
+  <div onclick="event.stopPropagation(); openModalCar()" style="
+    width: 360px;
+    height: 200px;
     margin: 0 auto 10px auto;
     display: flex;
     align-items: center;
@@ -1244,8 +1245,8 @@
     transition: transform 0.2s ease;
   " title="Clique para ampliar a foto">
     <img id="car-rotating-img" src="https://i.ibb.co/qXgRPtv/1000140110-removebg-preview.png" alt="Volkswagen Gol G6" style="
-      width: 130px;
-      height: 130px;
+      width: 250px;
+      height: 250px;
       object-fit: contain;
       border-radius: 10px;
       transition: opacity 0.5s ease;
@@ -1266,32 +1267,90 @@
   <p style="
     font-size: 0.8rem;
     color: var(--text-muted, #94A3B8);
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   ">
     Placa: <span style="color: red;">OVV7G08</span>
   </p>
 
-  <!-- Botão de Download das Duas Imagens -->
-  <button onclick="downloadCarImages()" style="
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, var(--primary-cyan, #00F2FE), var(--secondary-blue, #4FACFE));
-    color: #000000;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 10px;
-    font-size: 0.8rem;
-    font-weight: 800;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
-    transition: all 0.3s ease;
-  ">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-    Download da Foto do carro
-  </button>
+  <!-- Seta Retrátil Igual das Corridas -->
+  <div class="card-footer-toggle" style="margin-top: 0; padding-bottom: 4px;">
+    <div class="toggle-arrow">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+  </div>
+
+  <!-- Conteúdo Retrátil (Aparece ao Clicar) -->
+  <div class="trip-body" style="text-align: left; border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: 12px; padding-top: 14px;" onclick="event.stopPropagation()">
+    
+    <!-- Botão de Download das Duas Imagens -->
+    <div style="text-align: center;">
+      <button onclick="downloadCarImages()" style="
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, var(--primary-cyan, #00F2FE), var(--secondary-blue, #4FACFE));
+        color: #000000;
+        border: none;
+        margin: 10px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 0.82rem;
+        font-weight: 800;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+        transition: all 0.3s ease;
+      ">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Download da Foto do carro
+      </button>
+    </div> 
+    <!-- Bloco de Especificações de Consumo -->
+    <div style="
+      background: rgba(0, 242, 254, 0.04);
+      border: 1px dashed rgba(0, 242, 254, 0.25);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      font-size: 0.85rem;
+      color: var(--text-muted, #94A3B8);
+    ">
+      <div style="font-weight: 800; color: var(--primary-cyan, #00F2FE); text-transform: uppercase; margin-bottom: 8px; font-size: 0.8rem; letter-spacing: 0.5px;">
+        Consumo Real no Dia a Dia
+      </div>
+      
+      <ul style="list-style-type: none; display: flex; flex-direction: column; gap: 6px;">
+        <li style="position: relative; padding-left: 16px;">
+          <span style="position: absolute; left: 0; color: var(--primary-cyan);">•</span> <strong>Na cidade:</strong> Gasolina: Aproximadamente 10,6 km/l
+        </li>
+        <li style="position: relative; padding-left: 16px;">
+          <span style="position: absolute; left: 0; color: var(--primary-cyan);">•</span> <strong>Na estrada:</strong> Gasolina: Aproximadamente 12,9 km/l
+        </li>
+      </ul>
+
+      <div style="margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(0, 242, 254, 0.2); display: flex; flex-direction: column; gap: 4px;">
+        <div style="display: flex; justify-content: space-between;">
+          <span>Valor da Gasolina:</span>
+          <strong style="color: red;">R$ 6,85</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span>Custo por km rodado na cidade:</span>
+          <strong style="color: var(--neon-green, #00FF87);">R$ 0,65 / km</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span>Custo por km rodado na BR:</span>
+          <strong style="color: var(--neon-green, #00FF87);">R$ 0,53 / km</strong>
+        </div>
+        <h2 style="text-align: center;">Em getal:</h2>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="font-size: 12px;">Com manutenção preventiva, óleo e pneus:</span>
+          <strong style="color: var(--neon-green, #00FF87);">R$ 1,00 / km</strong>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <script>
@@ -1337,6 +1396,7 @@
     });
   }
 </script>
+
 
 
 
