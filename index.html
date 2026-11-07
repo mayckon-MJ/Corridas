@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1388,16 +1387,24 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
   ">
-    Volkswagen Gol G6
-  </h3>
-  <p style="
+    Volkswagen Gol G6 2015<br>
+    <p style="
     font-size: 0.8rem;
     color: var(--text-muted, #94A3B8);
     margin-bottom: 8px;
   ">
-    Placa: <span style="color: red;">OVV7G08</span>
+    Placa: <span style="color: red;">OVV7G08</span><br>
+    </p>
+    CB 300F 2025<br>
+    <p style="
+    font-size: 0.8rem;
+    color: var(--text-muted, #94A3B8);
+    margin-bottom: 8px;
+  ">
+        Placa: <span style="color: red;">TFM1C81</span>
   </p>
-
+  </h3>
+  
   <!-- Seta Retrátil Igual das Corridas -->
   <div class="card-footer-toggle" style="margin-top: 0; padding-bottom: 4px;">
     <div class="toggle-arrow">
@@ -1483,7 +1490,7 @@
   // Array com as imagens que vão alternar mantendo a velocidade configurada
   const carImages = [
     "https://i.ibb.co/qXgRPtv/1000140110-removebg-preview.png",
-    "https://i.ibb.co/673c15WW/1000140115-removebg-preview.png"
+    "https://i.ibb.co/FL9VLjVD/1000141701-removebg-preview.png"
   ];
   
   let currentCarIndex = 0;
@@ -1522,14 +1529,229 @@
     });
   }
 </script>
-
-
-
-
-
-
-
     </header>
+    
+    <!-- Seção Retrátil: Socorro e Serviços na Estrada -->
+<div class="trip-card" onclick="toggleCard(this)" style="
+  max-width: 820px;
+  margin: 24px auto;
+  padding: 16px 20px;
+  background: var(--card-bg, rgba(13, 20, 38, 0.7));
+  border: 1px solid var(--card-border, rgba(0, 242, 254, 0.18));
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  cursor: pointer;
+">
+  <!-- Botão Principal / Título -->
+  <div style="
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--primary-cyan, #00F2FE);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  ">
+    Serviço a Disposição
+  </div>
+  <p style="
+    font-size: 0.8rem;
+    color: var(--text-muted, #94A3B8);
+    margin-bottom: 8px;
+  ">
+    Toque para ver
+  </p>
+
+  <!-- Seta Retrátil -->
+  <div class="card-footer-toggle" style="margin-top: 0; padding-bottom: 4px;">
+    <div class="toggle-arrow">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+  </div>
+
+  <!-- Conteúdo Retrátil (Abre ao Clicar) -->
+  <div class="trip-body" style="text-align: left; border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: 12px; padding-top: 14px;" onclick="event.stopPropagation()">
+    <div style="
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    ">
+      
+      <!-- Item 1: Atendimento 24h -->
+      <div style="
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 12px 16px;
+        border-radius: 14px;
+      ">        
+        <div style="flex: 1;">
+          <div style="font-weight: 800; color: red; font-size: 0.95rem; margin-bottom: 2px; text-align: center;">
+            Atendimento 24 Horas
+          </div>
+          <div style="font-size: 0.82rem; color: var(--text-muted, #94A3B8); line-height: 1.4;">
+            Atendo a qualquer hora, só ligar e estou pronto para lhe ajudar.
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 2: Entregas e Encomendas -->
+      <div style="
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 12px 16px;
+        border-radius: 14px;
+      ">
+        <img src="https://i.ibb.co/gMz5CF0s/istockphoto-2205879175-612x612.jpg" alt="Faço Entrega" style="
+          width: 100px;
+          height: 100px;
+          object-fit: contain;
+          border-radius: 10px;
+          flex-shrink: 0;
+          background: rgba(0,0,0,0.2);
+          padding: 4px;
+          border: 1px solid rgba(0, 242, 254, 0.2);
+        ">
+        <div style="flex: 1;">
+          <div style="font-weight: 800; color: var(--text-main, #F1F5F9); font-size: 0.95rem; margin-bottom: 2px;">
+            Faço Entrega
+          </div>
+          <div style="font-size: 0.82rem; color: var(--text-muted, #94A3B8); line-height: 1.4;">
+            Transporte rápido e seguro de encomendas, volumes e cargas leves que de no carro ou moto.
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 3: Transporte de Passageiros -->
+      <div style="
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 12px 16px;
+        border-radius: 14px;
+      ">
+        <img src="https://i.ibb.co/q3LVfr9N/capa-uber-99-v3.png" alt="Carrego Pessoa" style="
+          width: 100px;
+          height: 100px;
+          object-fit: contain;
+          border-radius: 10px;
+          flex-shrink: 0;
+          background: rgba(0,0,0,0.2);
+          padding: 4px;
+          border: 1px solid rgba(0, 242, 254, 0.2);
+        ">
+        <div style="flex: 1;">
+          <div style="font-weight: 800; color: var(--text-main, #F1F5F9); font-size: 0.95rem; margin-bottom: 2px;">
+            Uber Particula 24H
+          </div>
+          <div style="font-size: 0.82rem; color: var(--text-muted, #94A3B8); line-height: 1.4;">
+            Viagens seguras e confortáveis com total segurança e tranquilidade.
+          </div>
+          <span>Carro /// Moto</span>
+        </div>
+      </div>
+
+      <!-- Item 4: Reboque com Cinta -->
+      <div style="
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 12px 16px;
+        border-radius: 14px;
+      ">
+        <img src="https://i.ibb.co/TpqXSyX/D-NQ-NP-724229-MLB89345755358-082025-O.webp" alt="Reboco Carro com Cinta" style="
+          width: 100px;
+          height: 100px;
+          object-fit: contain;
+          border-radius: 10px;
+          flex-shrink: 0;
+          background: rgba(0,0,0,0.2);
+          padding: 4px;
+          border: 1px solid rgba(0, 242, 254, 0.2);
+        ">
+        <div style="flex: 1;">
+          <div style="font-weight: 800; color: var(--text-main, #F1F5F9); font-size: 0.95rem; margin-bottom: 2px;">
+            Reboco Carro com Cinta
+          </div>
+          <div style="font-size: 0.82rem; color: var(--text-muted, #94A3B8); line-height: 1.4;">
+            Reboque especializado utilizando a cinta própria que possuo para tirar do sufoco.
+          </div>
+          </div>
+      </div>
+
+      <!-- Item 5: Remendo de Pneus sem Câmara -->
+      <div style="
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 12px 16px;
+        border-radius: 14px;
+      ">
+        <img src="https://i.ibb.co/j9rTjMXp/16740793d5a0d0455f9dbe89467400e4.jpg" alt="Remendo Pneus sem Câmara" style="
+          width: 100px;
+          height: 100px;
+          object-fit: contain;
+          border-radius: 10px;
+          flex-shrink: 0;
+          background: rgba(0,0,0,0.2);
+          padding: 4px;
+          border: 1px solid rgba(0, 242, 254, 0.2);
+        ">
+        <div style="flex: 1;">
+          <div style="font-weight: 800; color: var(--text-main, #F1F5F9); font-size: 0.95rem; margin-bottom: 2px;">
+            Remendo Pneus sem Câmara
+          </div>
+          <div style="font-size: 0.82rem; color: var(--text-muted, #94A3B8); line-height: 1.4;">
+            Conserto rápido e prático direto na estrada para tirar do prejuízo.
+          </div>
+          </div>
+      </div>
+      
+       <div style="
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 12px 16px;
+        border-radius: 14px;
+      ">
+        <img src="https://i.ibb.co/qMHKT01r/images-4.jpg" alt="Remendo Pneus sem Câmara" style="
+          width: 100px;
+          height: 100px;
+          object-fit: contain;
+          border-radius: 10px;
+          flex-shrink: 0;
+          background: rgba(0,0,0,0.2);
+          padding: 4px;
+          border: 1px solid rgba(0, 242, 254, 0.2);
+        ">
+        <div style="flex: 1;">
+          <div style="font-weight: 800; color: var(--text-main, #F1F5F9); font-size: 0.95rem; margin-bottom: 2px;">
+            Faço qualquer coisa que dê dinheiro
+          </div>
+          <div style="font-size: 0.82rem; color: var(--text-muted, #94A3B8); line-height: 1.4;">
+            Seu bolso é meu guia
+          </div>
+          </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
     <!-- Bloco Período Futurista -->
     <div style="
